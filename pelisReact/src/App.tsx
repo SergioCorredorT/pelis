@@ -1,26 +1,35 @@
-import './App.css';
+import "./App.css";
 import React, { useState } from "react";
 import { useMovies } from "../hooks/useMovies";
 import { Movies } from "../components/movies";
-import { useSearch } from '../hooks/useSearch';
+import { useSearch } from "../hooks/useSearch";
+import { useDebounce } from "../hooks/useDebounce";
 
 export function App(): JSX.Element {
-  const [sort, setSort] = useState(false)
+  const [sort, setSort] = useState(false);
   const { search, setSearch, error } = useSearch();
-  const { movies, getMovies , loading } = useMovies({search, sort});
+  const { movies, getMovies, loading } = useMovies({ search, sort });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    getMovies();
+    getMovies({ search });
   };
 
   const handleSort = () => {
-    setSort(!sort)
+    setSort(!sort);
+  };
 
-  }
+  const debounce = useDebounce();
 
   const handleChange = (event) => {
-    setSearch(event.target.value);
+    const newSearch = event.target.value;
+    setSearch(newSearch);
+
+    const debouncedFunction = () => {
+      getMovies({ search: newSearch });
+    };
+
+    debounce(debouncedFunction, 300);
   };
 
   return (
@@ -41,16 +50,12 @@ export function App(): JSX.Element {
               borderColor: error ? "red" : "transparent",
             }}
           />
-          <input type='checkbox' onChange={handleSort} checked={sort} />
+          <input type="checkbox" onChange={handleSort} checked={sort} />
           <button type="submit">Buscar</button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </header>
-      <main>
-        {
-          loading ? <p>Cargando ...</p> : <Movies movies={movies} />
-        }
-      </main>
+      <main>{loading ? <p>Cargando ...</p> : <Movies movies={movies} />}</main>
     </div>
   );
 }

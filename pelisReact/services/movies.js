@@ -1,5 +1,5 @@
 const API_KEY = "bd820b27";
-const POSTER_API_REQUEST = `https://www.omdbapi.com/?apikey=${API_KEY}`;
+const POSTER_API_REQUEST = `https://www.omdbapi.com/?type=movie&apikey=${API_KEY}`;
 
 export const searchMovies = async ({ search }) => {
     if (search === '') return null

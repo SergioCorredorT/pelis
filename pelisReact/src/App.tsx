@@ -1,9 +1,9 @@
 import "./App.css";
 import React, { useState } from "react";
-import { useMovies } from "../hooks/useMovies";
-import { Movies } from "../components/movies";
-import { useSearch } from "../hooks/useSearch";
-import { useDebounce } from "../hooks/useDebounce";
+import { useMovies } from "./hooks/useMovies";
+import { Movies } from "./components/movies";
+import { useSearch } from "./hooks/useSearch";
+import { useDebounce } from "./hooks/useDebounce";
 
 export function App(): JSX.Element {
   const [sort, setSort] = useState(false);
